@@ -17,10 +17,14 @@ func RequireTokenAuthentication(rw http.ResponseWriter, req *http.Request, next 
 		}
 	})
 
-	fmt.Println("middleware",!authBackend.IsInBlackList(req.Header.Get("Authorization")))
+	fmt.Println("middleware",authBackend.IsInBlackList(req.Header.Get("Authorization")))
+	//fmt.Println("token is Valid", &token.Valid)
+	fmt.Println("error is",err)
+
 	if err == nil && token.Valid && !authBackend.IsInBlackList(req.Header.Get("Authorization")) {
 		next(rw, req)
 	} else {
+		panic(err)
 		rw.WriteHeader(http.StatusUnauthorized)
 	}
 }

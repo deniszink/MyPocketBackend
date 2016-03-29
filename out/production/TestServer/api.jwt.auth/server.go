@@ -5,6 +5,7 @@ import (
 	"api.jwt.auth/routers"
 	"github.com/codegangsta/negroni"
 	"net/http"
+
 )
 
 func main() {
@@ -12,6 +13,6 @@ func main() {
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
-	http.ListenAndServe(":6000",n)
+	http.ListenAndServe(":5000",n)
 }
 

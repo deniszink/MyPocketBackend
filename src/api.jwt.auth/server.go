@@ -6,13 +6,20 @@ import (
 	"github.com/codegangsta/negroni"
 	"net/http"
 
+	"os"
+	"log"
 )
 
 func main() {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 	settings.Init()
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
-	http.ListenAndServe(":5000",n)
+	http.ListenAndServe(":"+port,n)
 }
 
