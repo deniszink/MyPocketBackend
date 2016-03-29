@@ -10,11 +10,9 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	//log.Print("Login")
 	requestUser := new(models.User)
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUser)
-	//fmt.Println(requestUser.Password, requestUser.Username, requestUser.UUID)
 
 	responseStatus, token := services.Login(requestUser)
 	w.Header().Set("Content-Type", "application/json")
