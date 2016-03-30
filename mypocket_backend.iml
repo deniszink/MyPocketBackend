@@ -7,6 +7,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Go 1.5.3" jdkType="Go SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="GOPATH &lt;TestServer&gt;" level="project" />
+    <orderEntry type="library" exported="" name="GOPATH &lt;mypocket_backend&gt;" level="project" />
   </component>
 </module>

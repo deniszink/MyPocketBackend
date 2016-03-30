@@ -1,1 +1,1 @@
-web: TestServer
+web: mypocket_backend
