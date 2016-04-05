@@ -1,1 +1,1 @@
-web: mypocket_backend
+web: src/server.go
