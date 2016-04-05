@@ -9,7 +9,7 @@ import (
 
 var environments = map[string]string{
 	"production": "api.jwt.auth/settings/prod.json",
-	"preproduction": "/Users/denis/Programming/Golang/TestServer/src/api.jwt.auth/settings/pre.json",
+	"preproduction": "/Users/denis/Programming/Golang/src/backend/src/api.jwt.auth/settings/pre.json",
 	//"tests": "../../settings/tests.json",
 }
 
