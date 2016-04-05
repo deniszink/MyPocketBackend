@@ -1,5 +1,0 @@
-{
-  "PrivateKeyPath": "/Users/denis/Programming/Golang/src/backend/src/api.jwt.auth/settings/keys/private_key",
-  "PublicKeyPath": "/Users/denis/Programming/Golang/src/backend/src/api.jwt.auth/settings/keys/public_key.pub",
-  "JWTExpirationDelta": 72
-}

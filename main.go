@@ -1,10 +1,10 @@
 package main
 
 import (
-	"api.jwt.auth/settings"
-	"api.jwt.auth/routers"
 	"github.com/codegangsta/negroni"
 	"net/http"
+	"backend/api.jwt.auth/settings"
+	"backend/api.jwt.auth/routers"
 )
 
 func main() {

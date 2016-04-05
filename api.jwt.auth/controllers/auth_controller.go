@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	"api.jwt.auth/models"
 	"encoding/json"
-
-	"api.jwt.auth/services"
-
+	"backend/api.jwt.auth/services"
+	"backend/api.jwt.auth/models"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
