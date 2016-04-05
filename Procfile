@@ -1,1 +1,1 @@
-web: src/server.go
+web: main.go
