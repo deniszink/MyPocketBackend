@@ -16,26 +16,6 @@ func Connect() (conn *RedisCli) {
 		instanceRedisCli = new(RedisCli)
 		var err error
 
-		/*redisPool := redis.Pool{
-			MaxIdle: 3,
-			MaxActive: 10,
-			Dial: func()(redis.Conn, error) {
-				c, err := redis.Dial("tcp",":6379")
-				if err != nil{
-					panic(err.Error())
-				}
-				return c,err
-			},
-		}
-
-		r := redisPool.Get()
-		_, err = r.Do("GET one")
-		if err != nil{
-			panic(err.Error())
-		}
-		r.Close()*/
-
-
 		instanceRedisCli.conn, err = redis.Dial("tcp", ":6379")
 
 		if err != nil {

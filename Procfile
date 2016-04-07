@@ -1,1 +1,1 @@
-web: api.jwt.auth/main.go
+web: backend
