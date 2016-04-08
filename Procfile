@@ -1,2 +1,2 @@
-web: MyPocketBackend
+web: backend
 worker: main
