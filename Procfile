@@ -1,2 +1,2 @@
 web: MyPocketBackend
-main: api.jwt.auth/main
+worker: api.jwt.auth/main
