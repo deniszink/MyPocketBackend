@@ -1,1 +1,1 @@
-web: mypocket-backend
+web: backend
