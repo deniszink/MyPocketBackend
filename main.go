@@ -7,6 +7,7 @@ import (
 	"backend/routers"
 	"os"
 
+	"log"
 )
 
 func main() {
@@ -14,7 +15,9 @@ func main() {
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), n)
+	port := os.Getenv("PORT")
+	log.Println(port)
+	err := http.ListenAndServe(":" + port, n)
 	if err != nil {
 		panic(err)
 	}
