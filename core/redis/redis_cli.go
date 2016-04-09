@@ -3,6 +3,7 @@ package redis
 import (
 	"github.com/garyburd/redigo/redis"
 
+	"os"
 )
 
 type RedisCli struct {
@@ -16,7 +17,7 @@ func Connect() (conn *RedisCli) {
 		instanceRedisCli = new(RedisCli)
 		var err error
 
-		instanceRedisCli.conn, err = redis.Dial("tcp", ":9951")
+		instanceRedisCli.conn, err = redis.Dial("redis", os.Getenv("REDISTOGO_URL"))
 
 		if err != nil {
 			panic(err)
