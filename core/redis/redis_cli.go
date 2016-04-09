@@ -16,7 +16,7 @@ func Connect() (conn *RedisCli) {
 		instanceRedisCli = new(RedisCli)
 		var err error
 
-		instanceRedisCli.conn, err = redis.Dial("tcp", "redis://redistogo:4e82903dfe08366aac967296747c44c8@lab.redistogo.com:9951")
+		instanceRedisCli.conn, err = redis.Dial("tcp", ":9951")
 
 		if err != nil {
 			panic(err)
