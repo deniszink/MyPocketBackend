@@ -13,9 +13,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"github.com/pborman/uuid"
 
-	"backend/api.jwt.auth/settings"
-	"backend/api.jwt.auth/models"
-	"backend/api.jwt.auth/core/redis"
+	"backend/settings"
+	"backend/models"
+	"backend/core/redis"
 )
 
 type JWTAuthenticationBackend struct {

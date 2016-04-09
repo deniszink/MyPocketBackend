@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
 	"log"
-	"backend/api.jwt.auth/models"
-	"backend/api.jwt.auth/core/authentication"
-	"backend/api.jwt.auth/api/parameters"
+	"backend/models"
+	"backend/core/authentication"
+	"backend/api/parameters"
 )
 
 func Login(requestUser *models.User) (int, []byte) {

@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/codegangsta/negroni"
 	"net/http"
-	"backend/api.jwt.auth/settings"
-	"backend/api.jwt.auth/routers"
+	"backend/settings"
+	"backend/routers"
 )
 
 func main() {

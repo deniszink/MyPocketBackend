@@ -4,8 +4,8 @@ import (
 
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
-	"backend/api.jwt.auth/core/authentication"
-	"backend/api.jwt.auth/controllers"
+	"backend/core/authentication"
+	"backend/controllers"
 )
 
 func SetHelloRoutes(router *mux.Router) *mux.Router {

@@ -4,8 +4,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/codegangsta/negroni"
 	"log"
-	"backend/api.jwt.auth/core/authentication"
-	"backend/api.jwt.auth/controllers"
+	"backend/core/authentication"
+	"backend/controllers"
 )
 
 func SetAuthenticationRoutes(router *mux.Router) *mux.Router{

@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 	"encoding/json"
-	"backend/api.jwt.auth/services"
-	"backend/api.jwt.auth/models"
+	"backend/models"
+	"backend/services"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
