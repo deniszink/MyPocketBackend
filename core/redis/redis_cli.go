@@ -45,5 +45,5 @@ func (redisCli *RedisCli) GetValue(key string) (interface{}, error) {
 	if err != nil{
 		panic(err)
 	}
-	return data
+	return data, err
 }
