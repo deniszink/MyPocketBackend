@@ -6,6 +6,7 @@ import (
 	"backend/settings"
 	"backend/routers"
 	"os"
+	"log"
 )
 
 func main() {
@@ -13,6 +14,6 @@ func main() {
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
-	http.ListenAndServe(":"+os.Getenv("PORT"), n)
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), n))
 }
 
