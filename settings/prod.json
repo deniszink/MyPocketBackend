@@ -1,5 +1,5 @@
 {
-  "PrivateKeyPath": "/Users/denis/Programming/Golang/src/backend/settings/keys/private_key",
-  "PublicKeyPath": "/Users/denis/Programming/Golang/src/backend/settings/keys/public_key.pub",
+  "PrivateKeyPath": "settings/keys/private_key",
+  "PublicKeyPath": "settings/keys/public_key.pub",
   "JWTExpirationDelta": 72
 }

@@ -8,8 +8,8 @@ import (
 )
 
 var environments = map[string]string{
-	"production": "api.jwt.auth/settings/prod.json",
-	"preproduction": "/Users/denis/Programming/Golang/src/backend/settings/pre.json",
+	"production": "settings/prod.json",
+	"preproduction": "settings/pre.json",
 	//"tests": "../../settings/tests.json",
 }
 
