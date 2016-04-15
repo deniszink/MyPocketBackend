@@ -16,6 +16,7 @@ import (
 	"backend/settings"
 	"backend/models"
 	"backend/core/redis"
+	"log"
 )
 
 type JWTAuthenticationBackend struct {
@@ -59,11 +60,13 @@ func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool{
 	testUser := models.User{
 		UUID:     uuid.New(),
 		Username: user.Username,
+		Email: user.Email,
 		Password: string(hashedPassword),
 	}
 
-	return user.Username == testUser.Username && bcrypt.CompareHashAndPassword([]byte(testUser.Password),
-		[]byte(user.Password)) == nil
+	log.Printf("Username = "+user.Username+", email = "+user.Password)
+
+	return user.Username == testUser.Username && bcrypt.CompareHashAndPassword([]byte(testUser.Password), []byte(user.Password)) == nil
 }
 
 func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int{
