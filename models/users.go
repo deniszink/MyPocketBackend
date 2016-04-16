@@ -1,9 +1,9 @@
 package models
 
-import "gopkg.in/mgo.v2-unstable/bson"
+import "gopkg.in/mgo.v2/bson"
 
 type User struct {
-	Id       bson.ObjectId `json:"id" bson:"_id"`
+	Id       bson.ObjectId `bson:"_id,omitempty"`
 	UUID     string `json:"uuid" form:"-"`
 	Username string `json:"username" form:"username"`
 	Email    string `json:"email" form:"email"`

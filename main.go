@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"backend/settings"
 	"backend/routers"
-	"os"
 
-	"log"
 )
 
 func main() {
@@ -16,7 +14,6 @@ func main() {
 	n := negroni.Classic()
 	n.UseHandler(router)
 
-	port := os.Getenv("PORT")
-	http.ListenAndServe(":" + port, n)
+	http.ListenAndServe(":5000", n)
 }
 

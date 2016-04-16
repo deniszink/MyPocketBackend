@@ -3,19 +3,21 @@ package services
 import (
 	"backend/models"
 	"backend/core/store"
-	"github.com/go-mgo/mgo/bson"
 	"net/http"
+	"gopkg.in/mgo.v2/bson"
+	"encoding/json"
 )
 
 func Registr(newUser *models.User)(int,[]byte){
-	var existUser models.User
 	mongo := store.ConnectMongo()
-	mongo.FindOne(store.TableUsers,bson.M{"email":newUser.Email}, &existUser)
-
-	if existUser != nil{
-		return http.StatusBadRequest, []byte("User with this email already exist")
+	err := mongo.FindOne(store.TableUsers,bson.M{"email":newUser.Email}, nil); if err != nil {
+		mongo.WriteDataTo(store.TableUsers,newUser)
+		return http.StatusCreated, []byte("")
 	}
+	response, _ := json.Marshal(models.Error{
+		Error: "User with this email already exists",
+	})
+	return http.StatusBadRequest, response
+//TODO: put email in post's body, do something with UUID or remove it
 
-	mongo.WriteDataTo(store.TableUsers,newUser)
-	return http.StatusCreated, []byte("")
 }

@@ -1,8 +1,11 @@
 package store
 
+
 import (
-	"github.com/go-mgo/mgo"
-	"github.com/go-mgo/mgo/bson"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+	"backend/models"
+	"fmt"
 )
 
 type MongoDB struct {
@@ -20,7 +23,7 @@ func ConnectMongo() (mongo *MongoDB){
 
 		var err error
 		mongoInstance.session,err = mgo.Dial("")
-		defer  mongoInstance.session.Close()
+		//defer  mongoInstance.session.Close()
 
 		if err != nil{
 			panic(err)
@@ -34,6 +37,10 @@ func ConnectMongo() (mongo *MongoDB){
 
 
 
+		if err != nil {
+			panic(err)
+		}
+
 	}
 
 	return mongoInstance
@@ -43,23 +50,24 @@ func(this *MongoDB) CreateTable(name string)(c *mgo.Collection){
 	return this.mongodb.C(name)
 }
 
-func(this *MongoDB) WriteDataTo(tableName string, data *struct{}){
-
+func(this *MongoDB) WriteDataTo(tableName string, data interface{}){
+	fmt.Println(data)
 	table := this.mongodb.C(tableName)
-	err := table.Insert(&data)
+	err := table.Insert(data)
 	if err != nil{
 		panic(err)
 	}
 }
 
-func(this *MongoDB) FindAll(tableName string,selector bson.M, source interface{}){
+func(this *MongoDB) FindAll(tableName string,selector bson.M, source interface{}) error{
 	table := this.mongodb.C(tableName)
-	table.Find(selector).All(&source)
+	return table.Find(selector).All(&source)
 }
 
-func(this *MongoDB) FindOne(tableName string, selector bson.M, source interface{}){
+func(this *MongoDB) FindOne(tableName string, selector bson.M, source interface{}) error{
+	user := &models.User{}
 	table := this.mongodb.C(tableName)
-	table.Find(selector).All(&source)
+	return table.Find(bson.M{"email":"batman@gmail.com"}).One(user)
 }
 
 func(this *MongoDB) Update(tableName string, model interface{}, source interface{}){
