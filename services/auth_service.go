@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
-	"log"
 	"backend/models"
 	"backend/core/authentication"
 	"backend/api/parameters"
@@ -12,14 +11,11 @@ import (
 
 func Login(requestUser *models.User) (int, []byte) {
 	authBackend := authentication.InitJWTAuthenticationBackend()
-	log.Print("Login authservice")
 	if authBackend.Authenticate(requestUser) {
-		log.Print("Login authservice if authBackend")
 		token, err := authBackend.GenerateToken(requestUser.UUID)
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
-			log.Print("Login authservice code 200")
 			response, _ := json.Marshal(parameters.TokenAuthentication{token})
 			return http.StatusOK, response
 		}

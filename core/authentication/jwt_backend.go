@@ -16,7 +16,6 @@ import (
 	"backend/settings"
 	"backend/models"
 	"backend/core/redis"
-	"log"
 )
 
 type JWTAuthenticationBackend struct {
@@ -54,7 +53,7 @@ func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string,
 	return tokenString, nil
 }
 
-func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool{
+func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	testUser := models.User{
@@ -64,12 +63,12 @@ func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool{
 		Password: string(hashedPassword),
 	}
 
-	log.Printf("Username = %s, password = %s email = %s", user.Username, user.Password, user.Email)
+	//log.Printf("Username = %s, password = %s email = %s", user.Username, user.Password, user.Email)
 
 	return user.Username == testUser.Username && bcrypt.CompareHashAndPassword([]byte(testUser.Password), []byte(user.Password)) == nil
 }
 
-func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int{
+func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int {
 	if validity, ok := timestamp.(float64); ok {
 		tm := time.Unix(int64(validity), 0)
 		remainer := tm.Sub(time.Now())
@@ -80,12 +79,12 @@ func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp int
 	return expireOffset
 }
 
-func (backend *JWTAuthenticationBackend)Logout(tokenString string, token *jwt.Token) error{
+func (backend *JWTAuthenticationBackend)Logout(tokenString string, token *jwt.Token) error {
 	redisConn := redis.Connect()
 	return redisConn.SetValue(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims["exp"]))
 }
 
-func (backend *JWTAuthenticationBackend) IsInBlackList (token string) bool{
+func (backend *JWTAuthenticationBackend) IsInBlackList(token string) bool {
 	redisConn := redis.Connect()
 	redisToken, _ := redisConn.GetValue(token)
 
@@ -95,7 +94,6 @@ func (backend *JWTAuthenticationBackend) IsInBlackList (token string) bool{
 
 	return true
 }
-
 
 func getPublicKey() *rsa.PublicKey {
 	publicKeyFile, err := os.Open(settings.Get().PublicKeyPath)
