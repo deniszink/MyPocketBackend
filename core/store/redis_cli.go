@@ -1,4 +1,4 @@
-package redis
+package store
 
 import (
 	"github.com/garyburd/redigo/redis"
@@ -25,6 +25,7 @@ func Connect() (conn *RedisCli) {
 			instanceRedisCli.conn.Close()
 			panic(err)
 		}
+
 
 	}
 

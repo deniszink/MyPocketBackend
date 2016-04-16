@@ -1,7 +1,7 @@
-package parameters
+package models
 
 import ()
 
-type TokenAuthentication struct {
+type Token struct {
 	Token string `json:"token" form:"token"`
 }

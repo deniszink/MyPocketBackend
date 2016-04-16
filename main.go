@@ -15,11 +15,8 @@ func main() {
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
+
 	port := os.Getenv("PORT")
-	log.Println(port)
-	err := http.ListenAndServe(":" + port, n)
-	if err != nil {
-		panic(err)
-	}
+	http.ListenAndServe(":" + port, n)
 }
 
