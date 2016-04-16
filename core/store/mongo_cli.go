@@ -10,9 +10,11 @@ type MongoDB struct {
 	mongodb *mgo.Database
 }
 
+var TableUsers string = "users"
+
 var mongoInstance *MongoDB
 
-func ConnectMongo(name string) (mongo *MongoDB){
+func ConnectMongo() (mongo *MongoDB){
 	if mongoInstance == nil{
 		mongoInstance = new(MongoDB)
 
@@ -27,6 +29,9 @@ func ConnectMongo(name string) (mongo *MongoDB){
 		mongoInstance.session.SetMode(mgo.Monotonic,true)
 
 		mongoInstance.mongodb = mongoInstance.session.DB("mypocket_db")
+
+		mongoInstance.mongodb.C(TableUsers)
+
 
 
 	}
