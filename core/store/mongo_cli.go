@@ -17,12 +17,21 @@ var TableUsers string = "users"
 
 var mongoInstance *MongoDB
 
+/*const (
+	MongoDBHosts = "ds035428.mongolab.com:35428"
+	AuthDatabase = "goinggo"
+	AuthUserName = "guest"
+	AuthPassword = "welcome"
+	TestDatabase = "goinggo"
+)*/
+
 func ConnectMongo() (mongo *MongoDB){
 	if mongoInstance == nil{
 		mongoInstance = new(MongoDB)
 
 		var err error
-		mongoInstance.session,err = mgo.Dial("")
+		mongoInstance.session,err = mgo.Dial("mlab.com:11271/heroku_96lfkqsw")
+
 		//defer  mongoInstance.session.Close()
 
 		if err != nil{
