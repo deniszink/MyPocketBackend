@@ -71,7 +71,7 @@ func(this *MongoDB) FindOne(tableName string, selector bson.M, source interface{
 }
 
 func(this *MongoDB) Update(tableName string, model interface{}, source interface{}){
-
+ //todo implement change email for user
 }
 
 
