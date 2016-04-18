@@ -47,7 +47,7 @@ func ConnectMongo() (mongo *MongoDB) {
 
 		mongoInstance.session.SetMode(mgo.Monotonic, true)
 
-		mongoInstance.mongodb = mongoInstance.session.DB("mypocket_db")
+		mongoInstance.mongodb = mongoInstance.session.DB(AuthDatabase)
 
 		mongoInstance.mongodb.C(TableUsers)
 
