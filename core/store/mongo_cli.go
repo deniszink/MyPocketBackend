@@ -67,7 +67,7 @@ func(this *MongoDB) FindAll(tableName string,selector bson.M, source interface{}
 func(this *MongoDB) FindOne(tableName string, selector bson.M, source interface{}) error{
 	user := &models.User{}
 	table := this.mongodb.C(tableName)
-	return table.Find(bson.M{"email":"batman@gmail.com"}).One(user)
+	return table.Find(selector).One(user)
 }
 
 func(this *MongoDB) Update(tableName string, model interface{}, source interface{}){

@@ -5,6 +5,7 @@ import (
 	"backend/models"
 	"encoding/json"
 	"backend/services"
+	"fmt"
 )
 
 func Registration(w http.ResponseWriter, r *http.Request) {
@@ -12,7 +13,9 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	decode := json.NewDecoder(r.Body)
 	decode.Decode(&newUser)
 
-	responseStatus, body := services.Registr(newUser)
+	fmt.Println(newUser)
+
+	responseStatus, body := services.Registration(newUser)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(responseStatus)
 	w.Write(body)

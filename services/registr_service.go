@@ -6,18 +6,20 @@ import (
 	"net/http"
 	"gopkg.in/mgo.v2/bson"
 	"encoding/json"
+
 )
 
-func Registr(newUser *models.User)(int,[]byte){
+func Registration(newUser *models.User)(int,[]byte){
 	mongo := store.ConnectMongo()
+
 	err := mongo.FindOne(store.TableUsers,bson.M{"email":newUser.Email}, nil); if err != nil {
 		mongo.WriteDataTo(store.TableUsers,newUser)
 		return http.StatusCreated, []byte("")
 	}
+
 	response, _ := json.Marshal(models.Error{
 		Error: "User with this email already exists",
 	})
 	return http.StatusBadRequest, response
-//TODO: put email in post's body, do something with UUID or remove it
 
 }
