@@ -18,10 +18,10 @@ var TableUsers string = "users"
 var mongoInstance *MongoDB
 
 const (
-	MongoDBHosts = "mlab.com:11271"
+	MongoDBHosts = "ds011271.mlab.com:11271"
 	AuthDatabase = "heroku_96lfkqsw"
-	AuthUserName = "heroku_96lfkqsw"
-	AuthPassword = ""
+	AuthUserName = "denisz"
+	AuthPassword = "mypocket"
 )
 
 func ConnectMongo() (mongo *MongoDB) {
