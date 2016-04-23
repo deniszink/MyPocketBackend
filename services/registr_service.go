@@ -20,6 +20,6 @@ func Registration(newUser *models.User)(int,[]byte){
 	response, _ := json.Marshal(models.Error{
 		Error: "User with this email already exists",
 	})
-	return http.StatusBadRequest, response
+	return http.StatusBadRequest, []byte(response)
 
 }
