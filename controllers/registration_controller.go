@@ -15,8 +15,8 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	decode.Decode(&newUser)
 
 	fmt.Println(newUser)
-	data,_ :=ioutil.ReadAll(r.Body)
-	fmt.Printf("body = %s",string(data))
+	data, _ := ioutil.ReadAll(r.Body)
+	fmt.Printf("body = %s", string(data))
 
 	responseStatus, body := services.Registration(newUser)
 	w.Header().Set("Content-Type", "application/json")
