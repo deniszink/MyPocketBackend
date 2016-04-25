@@ -7,10 +7,25 @@ import (
 	"backend/models"
 	"backend/core/authentication"
 
+	"backend/core/store"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func Login(requestUser *models.User) (int, []byte) {
 	authBackend := authentication.InitJWTAuthenticationBackend()
+
+	mongo := store.ConnectMongo()
+	user := &models.User{}
+
+	err := mongo.GetOne(store.TableUsers,bson.M{"email":requestUser.Email, "password":requestUser.Password}, user);
+
+	if err != nil{
+		return http.StatusBadRequest, json.Marshal(models.Error{
+			Error: "Password and/or email were incorrect, please try again",
+		})
+	}
+
+
 	if authBackend.Authenticate(requestUser) {
 		token, err := authBackend.GenerateToken(requestUser.UUID)
 		if err != nil {

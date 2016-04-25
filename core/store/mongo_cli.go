@@ -79,9 +79,14 @@ func (this *MongoDB) FindAll(tableName string, selector bson.M, source interface
 }
 
 func (this *MongoDB) FindOne(tableName string, selector bson.M, source interface{}) error {
-	user := &models.User{}
+	user := &models.User{}//todo change this to abstract
 	table := this.mongodb.C(tableName)
 	return table.Find(selector).One(user)
+}
+
+func (this *MongoDB) GetOne(tableName string, selector bson.M, source interface{}) error {
+	table := this.mongodb.C(tableName)
+	return table.Find(selector).One(source)
 }
 
 func (this *MongoDB) Update(tableName string, model interface{}, source interface{}) {
