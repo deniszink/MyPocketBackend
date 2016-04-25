@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"backend/models"
 	"backend/services"
-	"io/ioutil"
-	"bytes"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -14,7 +12,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUser)
 
-	if requestUser.Email == nil && requestUser.Password == nil{
+	if requestUser.Email == "" && requestUser.Password == "" {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		return
