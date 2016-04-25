@@ -20,9 +20,10 @@ func Login(requestUser *models.User) (int, []byte) {
 	err := mongo.GetOne(store.TableUsers,bson.M{"email":requestUser.Email, "password":requestUser.Password}, user);
 
 	if err != nil{
-		return http.StatusBadRequest, json.Marshal(models.Error{
+		response,_  :=json.Marshal(models.Error{
 			Error: "Password and/or email were incorrect, please try again",
 		})
+		return http.StatusBadRequest, []byte(response)
 	}
 
 
