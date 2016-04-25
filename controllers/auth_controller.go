@@ -6,21 +6,19 @@ import (
 	"backend/models"
 	"backend/services"
 	"io/ioutil"
+	"bytes"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadAll(r.Body); if err != nil {
-		panic(err)
-	}
+	requestUser := new(models.User)
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&requestUser)
 
-	if (data == []byte("{}")) {
+	if requestUser.Email == nil && requestUser.Password == nil{
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	requestUser := new(models.User)
-	decoder := json.NewDecoder(r.Body)
-	decoder.Decode(&requestUser)
 
 	responseStatus, token := services.Login(requestUser)
 	w.Header().Set("Content-Type", "application/json")
