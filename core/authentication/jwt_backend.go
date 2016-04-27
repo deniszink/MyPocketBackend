@@ -11,7 +11,6 @@ import (
 	"crypto/x509"
 
 	"golang.org/x/crypto/bcrypt"
-	"github.com/pborman/uuid"
 
 	"backend/settings"
 	"backend/models"
@@ -40,11 +39,11 @@ func InitJWTAuthenticationBackend() *JWTAuthenticationBackend {
 	return authBackendInstance
 }
 
-func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string, error) {
+func (backend *JWTAuthenticationBackend) GenerateToken(userID string) (string, error) {
 	token := jwt.New(jwt.SigningMethodRS512)
 	token.Claims["exp"] = time.Now().Add(time.Hour * time.Duration(settings.Get().JWTExpirationDelta)).Unix()
 	token.Claims["iat"] = time.Now().Unix()
-	token.Claims["sub"] = userUUID
+	token.Claims["sub"] = userID
 	tokenString, err := token.SignedString(backend.privateKey)
 	if err != nil {
 		panic(err)
@@ -57,7 +56,6 @@ func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	testUser := models.User{
-		UUID:     uuid.New(),
 		Username: user.Username,
 		Email: user.Email,
 		Password: string(hashedPassword),
