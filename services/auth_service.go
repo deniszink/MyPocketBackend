@@ -13,8 +13,8 @@ import (
 )
 
 type LoginResponse struct {
-	user *models.User `json:"user" form:"user"`
-	token models.Token `json:"token" form:"token"`
+	*models.User
+	*models.Token
 }
 
 func Login(requestUser *models.User) (int, []byte) {

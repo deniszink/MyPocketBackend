@@ -1,13 +1,18 @@
 package main
 
 import (
-"github.com/codegangsta/negroni"
-"net/http"
-"backend/settings"
-"backend/routers"
-"os"
+	"backend/models"
+	"net/http"
+	"os"
+	"backend/settings"
+	"backend/routers"
+	"github.com/codegangsta/negroni"
 )
 
+type Model struct {
+	 *models.User `json:"user"`
+	 *models.Token
+}
 func main() {
 	settings.Init()
 	router := routers.InitRoutes()
