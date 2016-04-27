@@ -9,6 +9,7 @@ import (
 
 	"backend/core/store"
 	"gopkg.in/mgo.v2/bson"
+	"bytes"
 )
 
 func Login(requestUser *models.User) (int, []byte) {
@@ -16,23 +17,24 @@ func Login(requestUser *models.User) (int, []byte) {
 
 	mongo := store.ConnectMongo()
 	user := &models.User{}
+	//check is user exists
+	err := mongo.GetOne(store.TableUsers, bson.M{"email":requestUser.Email, "password":requestUser.Password}, user);
 
-	err := mongo.GetOne(store.TableUsers,bson.M{"email":requestUser.Email, "password":requestUser.Password}, user);
-
-	if err != nil{
-		response,_  :=json.Marshal(models.Error{
+	if err != nil {
+		response, _ := json.Marshal(models.Error{
 			Error: "Password and/or email were incorrect, please try again",
 		})
 		return http.StatusBadRequest, []byte(response)
 	}
-
 
 	if authBackend.Authenticate(requestUser) {
 		token, err := authBackend.GenerateToken(requestUser.UUID)
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
-			response, _ := json.Marshal(models.Token{token})
+			responseToken, _ := json.Marshal(models.Token{token})
+			responseUser,_ := json.Marshal(user)
+			response := append(responseUser,responseToken...)
 			return http.StatusOK, response
 		}
 	}
@@ -53,7 +55,7 @@ func RefreshToken(requestUser *models.User) []byte {
 	return response
 }
 
-func Logout(req *http.Request) error{
+func Logout(req *http.Request) error {
 	authBackend := authentication.InitJWTAuthenticationBackend()
 	tokenRequest, err := jwt.ParseFromRequest(req, func(token *jwt.Token) (interface{}, error) {
 		return authBackend.PublicKey, nil

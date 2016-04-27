@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/codegangsta/negroni"
-	"net/http"
-	"backend/settings"
-	"backend/routers"
+"github.com/codegangsta/negroni"
+"net/http"
+"backend/settings"
+"backend/routers"
 
-	"os"
+"os"
 )
 
 func main() {
