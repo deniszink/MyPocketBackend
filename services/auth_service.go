@@ -9,6 +9,7 @@ import (
 
 	"backend/core/store"
 	"gopkg.in/mgo.v2/bson"
+	"fmt"
 )
 
 func Login(requestUser *models.User) (int, []byte) {
@@ -32,8 +33,9 @@ func Login(requestUser *models.User) (int, []byte) {
 			return http.StatusInternalServerError, []byte("")
 		} else {
 			responseToken, _ := json.Marshal(models.Token{token})
-			responseUser,_ := json.Marshal(user)
-			response := append(responseUser,responseToken...)
+			responseUser, _ := json.Marshal(user)
+			response := append(responseUser, responseToken...)
+			fmt.Println(string(response))
 			return http.StatusOK, response
 		}
 	}
