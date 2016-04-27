@@ -40,7 +40,7 @@ func Login(requestUser *models.User) (int, []byte) {
 			responseToken, _ := json.Marshal(models.Token{token})
 			responseUser, _ := json.Marshal(user)
 			//response := append(responseUser, responseToken...)
-			response, _ := json.Marshal(LoginResponse{
+			response, _ := json.Marshal(&LoginResponse{
 				responseUser,
 				responseToken,
 			})
