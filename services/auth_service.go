@@ -9,7 +9,6 @@ import (
 
 	"backend/core/store"
 	"gopkg.in/mgo.v2/bson"
-	"bytes"
 )
 
 func Login(requestUser *models.User) (int, []byte) {
