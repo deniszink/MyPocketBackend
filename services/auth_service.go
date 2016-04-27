@@ -13,7 +13,7 @@ import (
 )
 
 type LoginResponse struct {
-	*models.User
+	*models.User `json:"user"`
 	*models.Token
 }
 
@@ -42,7 +42,7 @@ func Login(requestUser *models.User) (int, []byte) {
 			//response := append(responseUser, responseToken...)
 			response, _ := json.Marshal(LoginResponse{
 				user,
-				models.Token{token},
+				&models.Token{token},
 			})
 			fmt.Println(string(response))
 			return http.StatusOK, response

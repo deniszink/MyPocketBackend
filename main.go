@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend/models"
 	"net/http"
 	"os"
 	"backend/settings"
@@ -9,10 +8,6 @@ import (
 	"github.com/codegangsta/negroni"
 )
 
-type Model struct {
-	 *models.User `json:"user"`
-	 *models.Token
-}
 func main() {
 	settings.Init()
 	router := routers.InitRoutes()
