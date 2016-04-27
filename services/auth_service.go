@@ -12,6 +12,11 @@ import (
 	"fmt"
 )
 
+type LoginResponse struct {
+	user  []byte
+	token []byte
+}
+
 func Login(requestUser *models.User) (int, []byte) {
 	authBackend := authentication.InitJWTAuthenticationBackend()
 
@@ -34,7 +39,11 @@ func Login(requestUser *models.User) (int, []byte) {
 		} else {
 			responseToken, _ := json.Marshal(models.Token{token})
 			responseUser, _ := json.Marshal(user)
-			response := append(responseUser, responseToken...)
+			//response := append(responseUser, responseToken...)
+			response, _ := json.Marshal(LoginResponse{
+				responseUser,
+				responseToken,
+			})
 			fmt.Println(string(response))
 			return http.StatusOK, response
 		}
