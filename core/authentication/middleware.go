@@ -5,6 +5,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"fmt"
 	"encoding/json"
+	"backend/models"
 )
 
 func RequireTokenAuthentication(rw http.ResponseWriter, req *http.Request, next http.HandlerFunc){
@@ -25,7 +26,9 @@ func RequireTokenAuthentication(rw http.ResponseWriter, req *http.Request, next 
 	if err == nil && token.Valid && !authBackend.IsInBlackList(req.Header.Get("Authorization")) {
 		next(rw, req)
 	} else {
-		response,_ := json.Marshal("No token in request")
+		response,_ := json.Marshal(&models.Error{
+			Error: "No token in request",
+		})
 		rw.WriteHeader(http.StatusUnauthorized)
 		rw.Write(response)
 	}
