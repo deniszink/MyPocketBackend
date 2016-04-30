@@ -42,7 +42,7 @@ func Logout(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		w.WriteHeader(http.StatusInternalServerError)
 	} else {
 		response, _ := json.Marshal(&models.Message{
-			Message: "Logout succesful",
+			Message: "Logout successful",
 		})
 		w.WriteHeader(http.StatusOK)
 		w.Write(response)
