@@ -15,22 +15,38 @@ func Connect() (conn *RedisCli) {
 		instanceRedisCli = new(RedisCli)
 		var err error
 		//this is works!!!
-		instanceRedisCli.conn, err = redis.Dial("tcp", "lab.redistogo.com:9951")
+		//instanceRedisCli.conn, err = redis.Dial("tcp", "lab.redistogo.com:9951")
+		instanceRedisCli.conn = newPool().Get()
 
 		if err != nil {
 			panic(err)
 		}
 
 		if _, err := instanceRedisCli.conn.Do("AUTH", "4e82903dfe08366aac967296747c44c8"); err != nil {
-			//instanceRedisCli.conn.Close()
+			instanceRedisCli.conn.Close()
 			panic(err)
 		}
-
 
 	}
 
 
+
+
 	return instanceRedisCli
+}
+func newPool() *redis.Pool {
+	return &redis.Pool{
+		MaxIdle: 80,
+		MaxActive: 12000, // max number of connections
+		Dial: func() (redis.Conn, error) {
+			c, err := redis.Dial("tcp", "lab.redistogo.com:9951")
+			if err != nil {
+				panic(err)
+			}
+			return c, err
+		},
+	}
+
 }
 
 func (redisCli *RedisCli) SetValue(key, value string, expiration ...interface{}) error {
@@ -44,6 +60,7 @@ func (redisCli *RedisCli) SetValue(key, value string, expiration ...interface{})
 
 func (redisCli *RedisCli) GetValue(key string) (interface{}, error) {
 	data, err := redisCli.conn.Do("GET", key)
+
 	if err != nil{
 		panic(err)
 	}
