@@ -6,5 +6,6 @@ func InitRoutes() *mux.Router{
 	router := mux.NewRouter()
 	router = SetHelloRoutes(router)
 	router = SetAuthenticationRoutes(router)
+	router = SetWalletsRoutes(router)
 	return router
 }
