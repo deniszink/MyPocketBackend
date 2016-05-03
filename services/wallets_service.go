@@ -28,3 +28,26 @@ func CreateWallet(wallet *models.Wallet) (int,[]byte){
 	})
 	return http.StatusBadRequest, data
 }
+
+func GetAllWalletsByUser(userID string) (int,[]byte){
+	var wallets []models.Wallet
+
+	mongo := store.ConnectMongo()
+	if err := mongo.FindAll(store.TableWallets,bson.M{"userid":bson.ObjectIdHex(userID)},&wallets); err != nil{
+		fmt.Println(err)
+		response, _ := json.Marshal(&models.Error{
+			Error: "Error while trying get all wallet by userId",
+		})
+		return http.StatusInternalServerError, []byte(response)
+	}
+
+	if(len(wallets) == 0){
+		return http.StatusOK, []byte("[]")
+	}else{
+		data,_ := json.Marshal(wallets)
+		return http.StatusOK, []byte(data)
+	}
+
+
+
+}
