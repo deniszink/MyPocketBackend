@@ -11,8 +11,8 @@ import (
 
 func Registration(newUser *models.User)(int,[]byte){
 	mongo := store.ConnectMongo()
-
-	err := mongo.FindOne(store.TableUsers,bson.M{"email":newUser.Email}, nil); if err != nil {
+	isExists,_ := mongo.IsExists(store.TableUsers,bson.M{"email":newUser.Email});
+	if !isExists {
 		mongo.WriteDataTo(store.TableUsers,newUser)
 		return http.StatusCreated, []byte("")
 	}
@@ -21,5 +21,4 @@ func Registration(newUser *models.User)(int,[]byte){
 		Error: "User with this email already exists",
 	})
 	return http.StatusBadRequest, []byte(response)
-
 }
