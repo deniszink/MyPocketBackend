@@ -12,5 +12,12 @@ func SetWalletsRoutes(router *mux.Router) *mux.Router {
 		negroni.HandlerFunc(authentication.RequireTokenAuthentication),
 		negroni.HandlerFunc(controllers.CreateWallet),
 	)).Methods("POST")
+
+
+	router.Handle("/wallets/{userId}",negroni.New(
+		negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+		negroni.HandlerFunc(controllers.GetAllWallets),
+	)).Methods("GET")
+
 	return router
 }
