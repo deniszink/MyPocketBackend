@@ -12,7 +12,7 @@ package sasl
 // struct sasl_conn {};
 //
 // #include <stdlib.h>
-// #include <sasl/sasl.h>
+// #include <sasl.h>
 //
 // sasl_callback_t *mgo_sasl_callbacks(const char *username, const char *password);
 //
