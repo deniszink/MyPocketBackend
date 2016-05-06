@@ -13,7 +13,7 @@ func CreateWallet(wallet *models.Wallet) (int, []byte) {
 	mongo := store.ConnectMongo()
 
 	//check if user exists
-	if isUserExists, _ := mongo.IsExists(store.TableUsers, bson.M{"id":wallet.UserID}); isUserExists {
+	if isUserExists, _ := mongo.IsExists(store.TableUsers, bson.M{"_id":wallet.UserID}); isUserExists {
 		//if so check if wallet already exists
 		if isWalletExists, _ := mongo.IsExists(store.TableWallets, bson.M{"walletname":wallet.WalletName, "userId":wallet.UserID}); isWalletExists {
 			data, _ := json.Marshal(&models.Error{
