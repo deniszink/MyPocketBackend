@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+type GET_Transactions struct {
+	Transactions []models.Transaction `json:"transactions,omitempty" form:"transactions"`
+}
+
 func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 	mongo := store.ConnectMongo()
 
@@ -80,4 +84,30 @@ func doTransaction(transaction *models.Transaction, c chan <- uint8) error {
 		c <- 1
 	}
 	return err
+}
+
+func GetAllTransactions(walletId bson.ObjectId) (int,[]byte){
+	mongo := store.ConnectMongo()
+
+	if isWalletExists, err := mongo.IsExists(store.TableWallets,bson.M{"_id":walletId}); !isWalletExists || err != nil{
+		fmt.Println(err)
+		response,_ := json.Marshal(&models.Error{
+			Error: "Wallet doesn't exists",
+		})
+		return http.StatusBadRequest,response
+	}
+
+	var transactions []models.Transaction
+	if err := mongo.FindAll(store.TableTransactions,bson.M{"walletId":walletId},&transactions); err != nil{
+		fmt.Println(err)
+		return http.StatusInternalServerError, []byte("")
+	}
+
+	response, _ := json.Marshal(&GET_Transactions{
+		Transactions: transactions,
+	})
+
+	//response, _ := json.Marshal(transactions)
+
+	return http.StatusOK, response
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"backend/services"
-	"fmt"
 )
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -26,9 +25,6 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(response)
 	} else {
-
-		fmt.Println("Transaction type :",transaction.TransactionType)
-
 		validWalletId := bson.ObjectIdHex(walletId)
 		transaction.WalletId = validWalletId
 		code, body := services.CreateTransaction(transaction)
@@ -37,4 +33,25 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		w.Write(body)
 	}
 
+}
+
+
+func GetAllTransactions(w http.ResponseWriter, r *http.Request, next http.HandlerFunc){
+	vars := mux.Vars(r)
+	walletId := vars["walletId"]
+
+	if hex := bson.IsObjectIdHex(walletId); !hex{
+		response, _ := json.Marshal(&models.Error{
+			Error: "Wallet id is not valid, please check your input data.",
+		})
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(response)
+	} else{
+		validWalletId := bson.ObjectIdHex(walletId)
+		code, body := services.GetAllTransactions(validWalletId)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(code)
+		w.Write(body)
+	}
 }
