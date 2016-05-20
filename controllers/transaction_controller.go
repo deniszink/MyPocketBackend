@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"backend/services"
+	"fmt"
 )
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -25,6 +26,9 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(response)
 	} else {
+
+		fmt.Println("Transaction type :",transaction.TransactionType)
+
 		validWalletId := bson.ObjectIdHex(walletId)
 		transaction.WalletId = validWalletId
 		code, body := services.CreateTransaction(transaction)

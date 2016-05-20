@@ -86,7 +86,8 @@ func (this *MongoDB) FindOne(tableName string, selector bson.M, source interface
 	table := this.mongodb.C(tableName)
 	return table.Find(selector).One(source)
 }
-func (this *MongoDB) IsExists(tableName string, selector bson.M)  (bool,error) {
+
+func (this *MongoDB) IsExists(tableName string, selector bson.M) (bool, error) {
 	table := this.mongodb.C(tableName)
 	count, err := table.Find(selector).Count()
 	fmt.Print(count, err)
@@ -98,8 +99,9 @@ func (this *MongoDB) GetOne(tableName string, selector bson.M, source interface{
 	return table.Find(selector).One(source)
 }
 
-func (this *MongoDB) Update(tableName string, model interface{}, source interface{}) {
-	//todo implement change email for user
+func (this *MongoDB) Update(tableName string, selector interface{}, source interface{}) error {
+	table := this.mongodb.C(tableName)
+	return table.Update(selector, source)
 }
 
 

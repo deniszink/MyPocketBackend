@@ -6,6 +6,6 @@ type Wallet struct {
 	Id         bson.ObjectId `bson:"_id,omitempty" json:"id"`
 	WalletName string `json:"walletName" form:"walletName"`
 	Currency   string `json:"currency" form:"currency"`
-	Balance    float64 `json:"balance" form:"balance"`
+	Balance    float32 `json:"balance" form:"balance"`
 	UserID     bson.ObjectId `bson:"userId,omitempty" json:"userId" form:"userId"`
 }

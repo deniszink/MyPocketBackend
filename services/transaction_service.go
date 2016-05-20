@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"gopkg.in/mgo.v2/bson"
+	"strings"
 )
 
 func CreateTransaction(transaction *models.Transaction) (int, []byte) {
@@ -27,7 +28,13 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 		})
 		return http.StatusInternalServerError, response
 	} else {
-		return http.StatusCreated, []byte("")
+		c := make(chan uint8)
+		go doTransaction(transaction, c)
+		if res := <-c; res == 1 {
+			return http.StatusCreated, []byte("")
+		} else {
+			return http.StatusInternalServerError, []byte("")
+		}
 	}
 
 }
@@ -36,8 +43,8 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	mongo := store.ConnectMongo()
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
-	(transaction.TransactionType >= 0 && transaction.TransactionType <= 1); !isValid {
-		return false, "amount should be > 0, type should be 0 or 1"
+	(strings.EqualFold(transaction.TransactionType,"income") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
+		return false, "amount should be > 0, type should be 'expense' or 'income'"
 	}
 
 	wallet := new(models.Wallet)
@@ -52,5 +59,25 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	}
 
 	return true, ""
+}
 
+func doTransaction(transaction *models.Transaction, c chan <- uint8) error {
+	mongo := store.ConnectMongo()
+	amount := transaction.Amount
+
+	wallet := new(models.Wallet)
+	mongo.GetOne(store.TableWallets, bson.M{"_id": transaction.WalletId}, wallet)
+	if (strings.EqualFold("expense",transaction.TransactionType)) {
+		wallet.Balance -= amount
+	} else {
+		wallet.Balance += amount
+	}
+
+	err := mongo.Update(store.TableWallets, bson.M{"_id":transaction.WalletId}, wallet)
+	if err != nil {
+		c <- 0
+	} else {
+		c <- 1
+	}
+	return err
 }
