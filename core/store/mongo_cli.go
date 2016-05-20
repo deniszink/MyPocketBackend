@@ -14,6 +14,7 @@ type MongoDB struct {
 
 var TableUsers string = "users"
 var TableWallets string = "wallets"
+var TableTransactions string = "transactions"
 var mongoInstance *MongoDB
 
 const (
@@ -55,6 +56,7 @@ func ConnectMongo() (mongo *MongoDB) {
 
 		mongoInstance.mongodb.C(TableUsers)
 		mongoInstance.mongodb.C(TableWallets)
+		mongoInstance.mongodb.C(TableTransactions)
 
 		if err != nil {
 			panic(err)

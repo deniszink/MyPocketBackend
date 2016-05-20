@@ -7,5 +7,6 @@ func InitRoutes() *mux.Router{
 	router = SetHelloRoutes(router)
 	router = SetAuthenticationRoutes(router)
 	router = SetWalletsRoutes(router)
+	router = SetTransactionRoutes(router)
 	return router
 }
