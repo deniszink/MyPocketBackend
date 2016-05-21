@@ -7,11 +7,21 @@ import (
 	"backend/controllers"
 )
 
-func SetTransactionRoutes(router *mux.Router) *mux.Router{
+func SetTransactionRoutes(router *mux.Router) *mux.Router {
 	router.Handle("/wallets/{walletId}/transactions", negroni.New(
 		negroni.HandlerFunc(authentication.RequireTokenAuthentication),
 		negroni.HandlerFunc(controllers.CreateTransaction),
 	)).Methods("POST")
+
+	router.Handle("/wallets/{walletId}/transactions", negroni.New(
+		negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+		negroni.HandlerFunc(controllers.GetAllIncomeTransactions),
+	)).Methods("GET").Queries("filter", "income")
+
+	router.Handle("/wallets/{walletId}/transactions", negroni.New(
+		negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+		negroni.HandlerFunc(controllers.GetAllExpenseTransactions),
+	)).Methods("GET").Queries("filter", "expense")
 
 	router.Handle("/wallets/{walletId}/transactions", negroni.New(
 		negroni.HandlerFunc(authentication.RequireTokenAuthentication),

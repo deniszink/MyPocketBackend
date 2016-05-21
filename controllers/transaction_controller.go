@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"backend/services"
+	"fmt"
 )
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -17,14 +18,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
 
-	if hex := bson.IsObjectIdHex(walletId); !hex {
-		response, _ := json.Marshal(&models.Error{
-			Error: "Wallet id is not valid, please check your input data.",
-		})
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(response)
-	} else {
+	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		transaction.WalletId = validWalletId
 		code, body := services.CreateTransaction(transaction)
@@ -35,23 +29,59 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 
 }
 
-
-func GetAllTransactions(w http.ResponseWriter, r *http.Request, next http.HandlerFunc){
+func GetAllTransactions(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
 
-	if hex := bson.IsObjectIdHex(walletId); !hex{
-		response, _ := json.Marshal(&models.Error{
-			Error: "Wallet id is not valid, please check your input data.",
-		})
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(response)
-	} else{
+	fmt.Println(vars)
+	fmt.Println(vars["filter"])
+
+	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		code, body := services.GetAllTransactions(validWalletId)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(code)
 		w.Write(body)
 	}
+}
+
+func GetAllIncomeTransactions(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	vars := mux.Vars(r)
+	walletId := vars["walletId"]
+
+	fmt.Println(vars)
+
+	if doWalletIDValidation(w, walletId) {
+		validWalletId := bson.ObjectIdHex(walletId)
+		code, body := services.GetAllIncomeTransaction(validWalletId)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(code)
+		w.Write(body)
+	}
+}
+
+func GetAllExpenseTransactions(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	vars := mux.Vars(r)
+	walletId := vars["walletId"]
+
+	if doWalletIDValidation(w, walletId) {
+		validWalletId := bson.ObjectIdHex(walletId)
+		code, body := services.GetAllExpenseTransactions(validWalletId)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(code)
+		w.Write(body)
+	}
+}
+
+func doWalletIDValidation(w http.ResponseWriter, walletId string) bool {
+	if hex := bson.IsObjectIdHex(walletId); !hex {
+		response, _ := json.Marshal(&models.Error{
+			Error: "Wallet id is not valid, please check your input data.",
+		})
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(response)
+		return false
+	}
+	return true
 }

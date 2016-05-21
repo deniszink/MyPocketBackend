@@ -47,7 +47,7 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	mongo := store.ConnectMongo()
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
-	(strings.EqualFold(transaction.TransactionType,"income") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
+	(strings.EqualFold(transaction.TransactionType, "income") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
 		return false, "amount should be > 0, type should be 'expense' or 'income'"
 	}
 
@@ -71,7 +71,7 @@ func doTransaction(transaction *models.Transaction, c chan <- uint8) error {
 
 	wallet := new(models.Wallet)
 	mongo.GetOne(store.TableWallets, bson.M{"_id": transaction.WalletId}, wallet)
-	if (strings.EqualFold("expense",transaction.TransactionType)) {
+	if (strings.EqualFold("expense", transaction.TransactionType)) {
 		wallet.Balance -= amount
 	} else {
 		wallet.Balance += amount
@@ -86,19 +86,19 @@ func doTransaction(transaction *models.Transaction, c chan <- uint8) error {
 	return err
 }
 
-func GetAllTransactions(walletId bson.ObjectId) (int,[]byte){
+func GetAllTransactions(walletId bson.ObjectId) (int, []byte) {
 	mongo := store.ConnectMongo()
 
-	if isWalletExists, err := mongo.IsExists(store.TableWallets,bson.M{"_id":walletId}); !isWalletExists || err != nil{
+	if isWalletExists, err := mongo.IsExists(store.TableWallets, bson.M{"_id":walletId}); !isWalletExists || err != nil {
 		fmt.Println(err)
-		response,_ := json.Marshal(&models.Error{
+		response, _ := json.Marshal(&models.Error{
 			Error: "Wallet doesn't exists",
 		})
-		return http.StatusBadRequest,response
+		return http.StatusBadRequest, response
 	}
 
 	var transactions []models.Transaction
-	if err := mongo.FindAll(store.TableTransactions,bson.M{"walletId":walletId},&transactions); err != nil{
+	if err := mongo.FindAll(store.TableTransactions, bson.M{"walletId":walletId}, &transactions); err != nil {
 		fmt.Println(err)
 		return http.StatusInternalServerError, []byte("")
 	}
@@ -107,7 +107,53 @@ func GetAllTransactions(walletId bson.ObjectId) (int,[]byte){
 		Transactions: transactions,
 	})
 
-	//response, _ := json.Marshal(transactions)
+	return http.StatusOK, response
+}
+
+func GetAllIncomeTransaction(walletId bson.ObjectId) (int, []byte) {
+	mongo := store.ConnectMongo()
+
+	if isWalletExists, err := mongo.IsExists(store.TableWallets, bson.M{"_id":walletId}); !isWalletExists || err != nil {
+		fmt.Println(err)
+		response, _ := json.Marshal(&models.Error{
+			Error: "Wallet doesn't exists",
+		})
+		return http.StatusBadRequest, response
+	}
+
+	var transactions []models.Transaction
+	if err := mongo.FindAll(store.TableTransactions, bson.M{"transactiontype":"income"}, &transactions); err != nil {
+		fmt.Println(err)
+		return http.StatusInternalServerError, []byte("")
+	}
+
+	response, _ := json.Marshal(&GET_Transactions{
+		Transactions: transactions,
+	})
+
+	return http.StatusOK, response
+}
+
+func GetAllExpenseTransactions(walletId bson.ObjectId) (int, []byte) {
+	mongo := store.ConnectMongo()
+
+	if isWalletExists, err := mongo.IsExists(store.TableWallets, bson.M{"_id":walletId}); !isWalletExists || err != nil {
+		fmt.Println(err)
+		response, _ := json.Marshal(&models.Error{
+			Error: "Wallet doesn't exists",
+		})
+		return http.StatusBadRequest, response
+	}
+
+	var transactions []models.Transaction
+	if err := mongo.FindAll(store.TableTransactions, bson.M{"transactiontype":"expense"}, &transactions); err != nil {
+		fmt.Println(err)
+		return http.StatusInternalServerError, []byte("")
+	}
+
+	response, _ := json.Marshal(&GET_Transactions{
+		Transactions: transactions,
+	})
 
 	return http.StatusOK, response
 }
