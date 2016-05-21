@@ -37,9 +37,6 @@ func Login(requestUser *models.User) (int, []byte) {
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
-			//responseToken, _ := json.Marshal(models.Token{token})
-			//responseUser, _ := json.Marshal(user)
-			//response := append(responseUser, responseToken...)
 			response, _ := json.Marshal(LoginResponse{
 				user,
 				&models.Token{token},
