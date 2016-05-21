@@ -14,18 +14,19 @@ type MongoDB struct {
 
 var TableUsers string = "users"
 var TableWallets string = "wallets"
+var TableTransactions string = "transactions"
 var mongoInstance *MongoDB
 
 const (
-	MongoDBHosts = "ds011271.mlab.com:11271"
+	/*MongoDBHosts = "ds011271.mlab.com:11271"
 	AuthDatabase = "heroku_96lfkqsw"
 	AuthUserName = "denisz"
-	AuthPassword = "mypocket"
+	AuthPassword = "mypocket"*/
 
-	/*MongoDBHosts = "127.0.0.1:27017"
+	MongoDBHosts = "127.0.0.1:27017"
 	AuthDatabase = "mypocket"
 	AuthUserName = ""
-	AuthPassword = ""*/
+	AuthPassword = ""
 )
 
 func ConnectMongo() (mongo *MongoDB) {
@@ -55,6 +56,7 @@ func ConnectMongo() (mongo *MongoDB) {
 
 		mongoInstance.mongodb.C(TableUsers)
 		mongoInstance.mongodb.C(TableWallets)
+		mongoInstance.mongodb.C(TableTransactions)
 
 		if err != nil {
 			panic(err)
@@ -84,7 +86,8 @@ func (this *MongoDB) FindOne(tableName string, selector bson.M, source interface
 	table := this.mongodb.C(tableName)
 	return table.Find(selector).One(source)
 }
-func (this *MongoDB) IsExists(tableName string, selector bson.M)  (bool,error) {
+
+func (this *MongoDB) IsExists(tableName string, selector bson.M) (bool, error) {
 	table := this.mongodb.C(tableName)
 	count, err := table.Find(selector).Count()
 	fmt.Print(count, err)
@@ -96,8 +99,9 @@ func (this *MongoDB) GetOne(tableName string, selector bson.M, source interface{
 	return table.Find(selector).One(source)
 }
 
-func (this *MongoDB) Update(tableName string, model interface{}, source interface{}) {
-	//todo implement change email for user
+func (this *MongoDB) Update(tableName string, selector interface{}, source interface{}) error {
+	table := this.mongodb.C(tableName)
+	return table.Update(selector, source)
 }
 
 
