@@ -58,8 +58,8 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	mongo := store.ConnectMongo()
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
-	(strings.EqualFold(transaction.TransactionType, "income") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
-		return false, "amount should be > 0, type should be 'expense' or 'income'"
+	(strings.EqualFold(transaction.TransactionType, "INCOME") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
+		return false, "amount should be bigger than 0, type should be 'expense' or 'income'"
 	}
 
 	wallet := new(models.Wallet)
