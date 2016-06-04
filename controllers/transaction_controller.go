@@ -15,7 +15,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	decode := json.NewDecoder(r.Body)
 	decode.Decode(transaction)
 
-	fmt.Print(transaction)
+
 
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
@@ -23,6 +23,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		transaction.WalletId = validWalletId
+		fmt.Println(transaction)
 		code, body := services.CreateTransaction(transaction)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(code)
