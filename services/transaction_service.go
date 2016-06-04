@@ -35,7 +35,7 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 		c := make(chan uint8)
 		go doTransaction(transaction, c)
 		if res := <-c; res == 1 {
-			t := new(models.Transaction)
+			/*t := new(models.Transaction)
 			err := mongo.GetOne(store.TableTransactions, bson.M{
 				"walletId":transaction.WalletId,
 				"amount": transaction.Amount,
@@ -45,8 +45,8 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 			if err != nil {
 				panic(err)
 			}
-			response, _ := json.Marshal(t)
-			return http.StatusCreated, []byte(response)
+			response, _ := json.Marshal(t)*/
+			return http.StatusCreated, []byte("")
 		} else {
 			return http.StatusInternalServerError, []byte("")
 		}
