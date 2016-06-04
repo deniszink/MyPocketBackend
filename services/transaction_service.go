@@ -63,7 +63,7 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	fmt.Println("amount is valid = ", isAmountValid, "type is valid = ", isTypeValid)
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
-	(strings.EqualFold(transaction.TransactionType, "income") || strings.EqualFold(transaction.TransactionType, "expense")); !isValid {
+	(strings.EqualFold(strings.ToLower(transaction.TransactionType), "income") || strings.EqualFold(strings.ToLower(transaction.TransactionType), "expense")); !isValid {
 		return false, "amount should be bigger than 0, type should be 'expense' or 'income'"
 	}
 
