@@ -8,5 +8,5 @@ type Transaction struct {
 	Amount          float32 `json:"amount" form:"amount"`
 	TransactionType string`json:"type" form:"type"`
 	UnixDateTime    int64 `json:"unixDateTime" form:"unixDateTime"`
-	CategoryId        string `json:"categoryId" from:"category"`
+	//CategoryId        string `json:"categoryId" from:"category"`
 }
