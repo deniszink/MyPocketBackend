@@ -8,4 +8,5 @@ type Transaction struct {
 	Amount          float32 `json:"amount" form:"amount"`
 	TransactionType string`json:"type" form:"type"`
 	unixDateTime    int64 `json:"unixDateTime" form:"unixDateTime"`
+	categoryId        string `json:"categoryId" from:"category"`
 }

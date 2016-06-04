@@ -35,7 +35,8 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 		c := make(chan uint8)
 		go doTransaction(transaction, c)
 		if res := <-c; res == 1 {
-			return http.StatusCreated, []byte("")
+			response,_ := json.Marshal(transaction)
+			return http.StatusCreated, []byte(response)
 		} else {
 			return http.StatusInternalServerError, []byte("")
 		}
