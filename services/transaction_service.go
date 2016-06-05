@@ -45,6 +45,7 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 				panic(err)
 			}
 			response, _ := json.Marshal(t)
+			
 			return http.StatusCreated, []byte(response)
 		} else {
 			return http.StatusInternalServerError, []byte("")
