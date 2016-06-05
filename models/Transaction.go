@@ -7,6 +7,6 @@ type Transaction struct {
 	WalletId        bson.ObjectId `bson:"walletId,omitempty" json:"walletId"`
 	Amount          float32 `json:"amount" form:"amount"`
 	TransactionType string`json:"type" form:"type"`
-	UnixDateTime    int64 `json:"unixDateTime" form:"unixDateTime"`
+	UnixDateTime    int `json:"unixDateTime" form:"unixDateTime"`
 	//Category        string `json:"categoryId"`
 }

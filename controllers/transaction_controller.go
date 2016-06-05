@@ -15,8 +15,6 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	decode := json.NewDecoder(r.Body)
 	decode.Decode(transaction)
 
-
-
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
 
