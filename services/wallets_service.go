@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"fmt"
-	"golang.org/x/crypto/salsa20/salsa"
 )
 
 func CreateWallet(wallet *models.Wallet) (int, []byte) {
