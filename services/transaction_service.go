@@ -10,9 +10,11 @@ import (
 	"strings"
 )
 
+/*
 type GET_Transactions struct {
 	Transactions []models.Transaction `json:"transactions,omitempty" form:"transactions"`
 }
+*/
 
 func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 	mongo := store.ConnectMongo()
@@ -120,9 +122,7 @@ func GetAllTransactions(walletId bson.ObjectId) (int, []byte) {
 		return http.StatusInternalServerError, []byte("")
 	}
 
-	response, _ := json.Marshal(&GET_Transactions{
-		Transactions: transactions,
-	})
+	response, _ := json.Marshal(transactions)
 
 	return http.StatusOK, response
 }
@@ -144,9 +144,7 @@ func GetAllIncomeTransaction(walletId bson.ObjectId) (int, []byte) {
 		return http.StatusInternalServerError, []byte("")
 	}
 
-	response, _ := json.Marshal(&GET_Transactions{
-		Transactions: transactions,
-	})
+	response, _ := json.Marshal(transactions)
 
 	return http.StatusOK, response
 }
@@ -168,9 +166,7 @@ func GetAllExpenseTransactions(walletId bson.ObjectId) (int, []byte) {
 		return http.StatusInternalServerError, []byte("")
 	}
 
-	response, _ := json.Marshal(&GET_Transactions{
-		Transactions: transactions,
-	})
+	response, _ := json.Marshal(transactions)
 
 	return http.StatusOK, response
 }
