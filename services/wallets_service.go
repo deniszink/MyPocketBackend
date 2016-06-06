@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"fmt"
+	"golang.org/x/crypto/salsa20/salsa"
 )
 
 func CreateWallet(wallet *models.Wallet) (int, []byte) {
@@ -24,7 +25,10 @@ func CreateWallet(wallet *models.Wallet) (int, []byte) {
 			if err := mongo.WriteDataTo(store.TableWallets, wallet); err != nil {
 				panic(err)
 			}
-			response, _ := json.Marshal(&models.Message{"Wallet succesfully created"})
+
+			wallet := &models.Wallet{}
+			mongo.GetOne(store.TableWallets,bson.M{"userId":wallet.UserID,"walletName":wallet.WalletName},wallet)
+			response, _ := json.Marshal(wallet)
 			return http.StatusCreated, response
 		}
 	} else {
