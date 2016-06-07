@@ -25,12 +25,13 @@ func CreateWallet(wallet *models.Wallet) (int, []byte) {
 				panic(err)
 			}
 
-			wallet := new(models.Wallet)
-			err := mongo.GetOne(store.TableWallets, bson.M{"userId":wallet.UserID, "walletName":wallet.WalletName}, wallet)
+			bodyWallet := new(models.Wallet)
+			err := mongo.GetOne(store.TableWallets, bson.M{"userId":wallet.UserID, "walletName":wallet.WalletName}, bodyWallet)
 			if err != nil{
 				panic(err)
 			}
-			response, _ := json.Marshal(wallet)
+
+			response, _ := json.Marshal(bodyWallet)
 			return http.StatusCreated, response
 		}
 	} else {
