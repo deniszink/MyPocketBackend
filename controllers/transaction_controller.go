@@ -14,6 +14,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	transaction := new(models.Transaction)
 	decode := json.NewDecoder(r.Body)
 	decode.Decode(transaction)
+	fmt.Println("TRANSACTION ",transaction)
 
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
@@ -85,7 +86,7 @@ func doWalletIDValidation(w http.ResponseWriter, walletId string) bool {
 }
 
 func validateTransaction(t *models.Transaction) bool {
-	return t.Amount != 0 || t.TransactionType != "" || t.UnixDateTime != 0
+	return t.Amount != 0 || t.Type != "" || t.UnixDateTime != 0
 }
 
 

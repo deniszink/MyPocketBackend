@@ -41,7 +41,8 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 			err := mongo.GetOne(store.TableTransactions, bson.M{
 				"walletId":transaction.WalletId,
 				"amount": transaction.Amount,
-				"unixDateTime":transaction.UnixDateTime,
+				"type":transaction.Type,
+				"unixDataTime":transaction.UnixDateTime,
 			}, t)
 
 			if err != nil {
@@ -61,13 +62,13 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	mongo := store.ConnectMongo()
 
 	isAmountValid := (transaction.Amount > 0 && transaction.Amount != 0)
-	isTypeValid := strings.EqualFold(transaction.TransactionType, "income") || strings.EqualFold(transaction.TransactionType, "expense")
+	isTypeValid := strings.EqualFold(transaction.Type, "income") || strings.EqualFold(transaction.Type, "expense")
 	fmt.Println(transaction)
 
-	fmt.Println("amount is valid = ", isAmountValid, "type is valid = ", isTypeValid, "type is = "+transaction.TransactionType)
+	fmt.Println("amount is valid = ", isAmountValid, "type is valid = ", isTypeValid, "type is = "+transaction.Type)
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
-	(strings.EqualFold(strings.ToLower(transaction.TransactionType), "income") || strings.EqualFold(strings.ToLower(transaction.TransactionType), "expense")); !isValid {
+	(strings.EqualFold(strings.ToLower(transaction.Type), "income") || strings.EqualFold(strings.ToLower(transaction.Type), "expense")); !isValid {
 		return false, "amount should be bigger than 0, type should be 'expense' or 'income'"
 	}
 
@@ -91,7 +92,7 @@ func doTransaction(transaction *models.Transaction, c chan <- uint8) error {
 
 	wallet := new(models.Wallet)
 	mongo.GetOne(store.TableWallets, bson.M{"_id": transaction.WalletId}, wallet)
-	if (strings.EqualFold("expense", transaction.TransactionType)) {
+	if (strings.EqualFold("expense", transaction.Type)) {
 		wallet.Balance -= amount
 	} else {
 		wallet.Balance += amount
