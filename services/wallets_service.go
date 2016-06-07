@@ -25,7 +25,7 @@ func CreateWallet(wallet *models.Wallet) (int, []byte) {
 				panic(err)
 			}
 
-			wallet := &models.Wallet{}
+			wallet := new(models.Wallet)
 			err := mongo.GetOne(store.TableWallets, bson.M{"userId":wallet.UserID, "walletName":wallet.WalletName}, wallet)
 			if err != nil{
 				panic(err)
