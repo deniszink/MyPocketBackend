@@ -41,6 +41,7 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 			err := mongo.GetOne(store.TableTransactions, bson.M{
 				"walletId":transaction.WalletId,
 				"amount": transaction.Amount,
+				"unixDateTime":transaction.UnixDateTime,
 			}, t)
 
 			if err != nil {
