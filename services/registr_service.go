@@ -14,7 +14,11 @@ func Registration(newUser *models.User)(int,[]byte){
 	isExists,_ := mongo.IsExists(store.TableUsers,bson.M{"email":newUser.Email});
 	if !isExists {
 		mongo.WriteDataTo(store.TableUsers,newUser)
-		return http.StatusCreated, []byte("")
+
+		user := new(models.User)
+		mongo.GetOne(store.TableUsers,bson.M{"email":newUser.Email},user)
+		body,_ := json.Marshal(user)
+		return http.StatusCreated, []byte(body)
 	}
 
 	response, _ := json.Marshal(models.Error{
