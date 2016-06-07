@@ -8,4 +8,5 @@ type Wallet struct {
 	Currency   string `json:"currency" form:"currency"`
 	Balance    float32 `json:"balance" form:"balance"`
 	UserID     bson.ObjectId `bson:"userId,omitempty" json:"userId" form:"userId"`
+	IsActive   bool `json:"isActive" bson:"isActive"`
 }
