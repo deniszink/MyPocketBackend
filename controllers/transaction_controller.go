@@ -18,14 +18,19 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
 
-	if doWalletIDValidation(w, walletId) {
-		validWalletId := bson.ObjectIdHex(walletId)
-		transaction.WalletId = validWalletId
-		fmt.Println(transaction)
-		code, body := services.CreateTransaction(transaction)
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(code)
-		w.Write(body)
+	if !validateTransaction(transaction){
+		response, _ := json.Marshal(&models.Error{
+			Error: "Body in not valid, check your request",
+		})
+		WriteResponse(w,http.StatusBadRequest,response)
+	}else {
+		if doWalletIDValidation(w, walletId) {
+			validWalletId := bson.ObjectIdHex(walletId)
+			transaction.WalletId = validWalletId
+			fmt.Println(transaction)
+			code, body := services.CreateTransaction(transaction)
+			WriteResponse(w,code,body)
+		}
 	}
 
 }
@@ -40,9 +45,7 @@ func GetAllTransactions(w http.ResponseWriter, r *http.Request, next http.Handle
 	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		code, body := services.GetAllTransactions(validWalletId)
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(code)
-		w.Write(body)
+		WriteResponse(w,code,body)
 	}
 }
 
@@ -55,9 +58,7 @@ func GetAllIncomeTransactions(w http.ResponseWriter, r *http.Request, next http.
 	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		code, body := services.GetAllIncomeTransaction(validWalletId)
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(code)
-		w.Write(body)
+		WriteResponse(w,code,body)
 	}
 }
 
@@ -68,9 +69,7 @@ func GetAllExpenseTransactions(w http.ResponseWriter, r *http.Request, next http
 	if doWalletIDValidation(w, walletId) {
 		validWalletId := bson.ObjectIdHex(walletId)
 		code, body := services.GetAllExpenseTransactions(validWalletId)
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(code)
-		w.Write(body)
+		WriteResponse(w,code,body)
 	}
 }
 
@@ -79,10 +78,14 @@ func doWalletIDValidation(w http.ResponseWriter, walletId string) bool {
 		response, _ := json.Marshal(&models.Error{
 			Error: "Wallet id is not valid, please check your input data.",
 		})
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(response)
+		WriteResponse(w,http.StatusBadRequest,response)
 		return false
 	}
 	return true
 }
+
+func validateTransaction(t *models.Transaction) bool {
+	return t.Amount != 0 || t.TransactionType != "" || t.UnixDateTime != 0
+}
+
+

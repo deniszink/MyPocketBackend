@@ -21,18 +21,18 @@ func CreateWallet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc)
 		body,_ := json.Marshal(&models.Error{
 			Error: "Body is not valid check your request",
 		})
-		writeResponse(w,http.StatusBadRequest,body)
+		WriteResponse(w,http.StatusBadRequest,body)
 	}else {
 
 		if isObjectIdHex := bson.IsObjectIdHex(userId); !isObjectIdHex {
 			body, _ := json.Marshal(&models.Error{
 				Error: "Invalid userId format, must be 12 length, check your input data",
 			})
-			writeResponse(w, http.StatusBadRequest, body)
+			WriteResponse(w, http.StatusBadRequest, body)
 		} else {
 			wallet.UserID = bson.ObjectIdHex(userId)
 			responseStatus, body := services.CreateWallet(wallet)
-			writeResponse(w, responseStatus, body)
+			WriteResponse(w, responseStatus, body)
 		}
 	}
 }
@@ -42,13 +42,7 @@ func GetAllWallets(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 	userId := vars["userId"]
 
 	responseStatus, body := services.GetAllWalletsByUser(userId)
-	writeResponse(w, responseStatus, body)
-}
-
-func writeResponse(w http.ResponseWriter, code int, body []byte) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	w.Write(body)
+	WriteResponse(w, responseStatus, body)
 }
 
 func validateWallet(wallet *models.Wallet) bool {
