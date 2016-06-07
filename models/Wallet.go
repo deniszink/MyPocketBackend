@@ -4,7 +4,7 @@ import "gopkg.in/mgo.v2/bson"
 
 type Wallet struct {
 	Id         bson.ObjectId `bson:"_id,omitempty" json:"id"`
-	WalletName string `json:"walletName" form:"walletName"`
+	WalletName string `json:"walletName" form:"walletName" bson:"walletName"`
 	Currency   string `json:"currency" form:"currency"`
 	Balance    float32 `json:"balance" form:"balance"`
 	UserID     bson.ObjectId `bson:"userId,omitempty" json:"userId" form:"userId"`
