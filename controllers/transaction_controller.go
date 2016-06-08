@@ -27,7 +27,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		WriteResponse(w,http.StatusBadRequest,response)
 	}else {
 		if doWalletIDValidation(w, walletId) {
-			if isWalletExists(bson.ObjectId(walletId)) {
+			if isExist,_ := isWalletExists(bson.ObjectId(walletId)); isExist {
 				validWalletId := bson.ObjectIdHex(walletId)
 				transaction.WalletId = validWalletId
 				fmt.Println(transaction)
