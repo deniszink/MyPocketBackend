@@ -16,8 +16,8 @@ func main() {
 	n := negroni.Classic()
 	n.UseHandler(router)
 
-	//http.ListenAndServe(":"+os.Getenv("PORT"), n)
-	http.ListenAndServe(":5000", n)
+	http.ListenAndServe(":"+os.Getenv("PORT"), n)
+	//http.ListenAndServe(":5000", n)
 
 }
 

@@ -18,15 +18,15 @@ var TableTransactions string = "transactions"
 var mongoInstance *MongoDB
 
 const (
-	/*MongoDBHosts = "ds011271.mlab.com:11271"
+	MongoDBHosts = "ds011271.mlab.com:11271"
 	AuthDatabase = "heroku_96lfkqsw"
 	AuthUserName = "denisz"
-	AuthPassword = "mypocket"*/
+	AuthPassword = "mypocket"
 
-	MongoDBHosts = "127.0.0.1:27017"
+	/*MongoDBHosts = "127.0.0.1:27017"
 	AuthDatabase = "mypocket"
 	AuthUserName = ""
-	AuthPassword = ""
+	AuthPassword = ""*/
 )
 
 func ConnectMongo() (mongo *MongoDB) {
