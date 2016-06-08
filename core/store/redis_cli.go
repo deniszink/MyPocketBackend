@@ -31,7 +31,7 @@ func Connect() (conn *RedisCli) {
 	return instanceRedisCli
 }
 
-func (redisCli *RedisCli) SetValue(key, value string, expiration ...interface{}) error {
+/*func (redisCli *RedisCli) SetValue(key, value string, expiration ...interface{}) error {
 	instanceRedisCli = Connect()
 	_, err := redisCli.conn.Do("SET", key, value)
 
@@ -49,5 +49,20 @@ func (redisCli *RedisCli) GetValue(key string) (interface{}, error) {
 		panic(err)
 	}
 	instanceRedisCli = nil
+	return data, err
+}*/
+
+
+func (redisCli *RedisCli) SetValue(key, value string, expiration ...interface{}) error {
+	_, err := redisCli.conn.Do("SET", key, value)
+
+	if err == nil && expiration != nil {
+		redisCli.conn.Do("EXPIRE", key, expiration[0])
+	}
+	return err
+}
+
+func (redisCli *RedisCli) GetValue(key string) (interface{}, error) {
+	data, err := redisCli.conn.Do("GET", key)
 	return data, err
 }
