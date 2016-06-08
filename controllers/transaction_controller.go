@@ -8,6 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"backend/services"
 	"fmt"
+	"backend/core/store"
 )
 
 func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -26,11 +27,18 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		WriteResponse(w,http.StatusBadRequest,response)
 	}else {
 		if doWalletIDValidation(w, walletId) {
-			validWalletId := bson.ObjectIdHex(walletId)
-			transaction.WalletId = validWalletId
-			fmt.Println(transaction)
-			code, body := services.CreateTransaction(transaction)
-			WriteResponse(w,code,body)
+			if isWalletExists(bson.ObjectId(walletId)) {
+				validWalletId := bson.ObjectIdHex(walletId)
+				transaction.WalletId = validWalletId
+				fmt.Println(transaction)
+				code, body := services.CreateTransaction(transaction)
+				WriteResponse(w, code, body)
+			}else{
+				response,_ := json.Marshal(&models.Error{
+					Error: "Wallet with this id doesn't exists",
+				})
+				WriteResponse(w,http.StatusBadRequest,response)
+			}
 		}
 	}
 
@@ -87,6 +95,11 @@ func doWalletIDValidation(w http.ResponseWriter, walletId string) bool {
 
 func validateTransaction(t *models.Transaction) bool {
 	return t.Amount != 0 || t.Type != "" || t.UnixDateTime != 0
+}
+
+func isWalletExists(walletId bson.ObjectId) (bool,error) {
+	mongo := store.ConnectMongo()
+	return mongo.IsExists(store.TableWallets,bson.M{"_id":walletId})
 }
 
 
