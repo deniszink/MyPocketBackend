@@ -49,7 +49,7 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 				panic(err)
 			}
 			response, _ := json.Marshal(t)
-			
+
 			return http.StatusCreated, []byte(response)
 		} else {
 			return http.StatusInternalServerError, []byte("")
@@ -65,7 +65,7 @@ func isTransactionValid(transaction *models.Transaction) (bool, string) {
 	isTypeValid := strings.EqualFold(transaction.Type, "income") || strings.EqualFold(transaction.Type, "expense")
 	fmt.Println(transaction)
 
-	fmt.Println("amount is valid = ", isAmountValid, "type is valid = ", isTypeValid, "type is = "+transaction.Type)
+	fmt.Println("amount is valid = ", isAmountValid, "type is valid = ", isTypeValid, "type is = " + transaction.Type)
 
 	if isValid := (transaction.Amount > 0 && transaction.Amount != 0) &&
 	(strings.EqualFold(strings.ToLower(transaction.Type), "income") || strings.EqualFold(strings.ToLower(transaction.Type), "expense")); !isValid {
@@ -124,7 +124,12 @@ func GetAllTransactions(walletId bson.ObjectId) (int, []byte) {
 		return http.StatusInternalServerError, []byte("")
 	}
 
-	response, _ := json.Marshal(transactions)
+	var response []byte
+	if transactions == nil {
+		response = []byte("[]")
+	} else {
+		response,_ = json.Marshal(transactions)
+	}
 
 	return http.StatusOK, response
 }
