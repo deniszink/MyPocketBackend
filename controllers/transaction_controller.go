@@ -19,6 +19,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 
 	vars := mux.Vars(r)
 	walletId := vars["walletId"]
+	fmt.Println(walletId)
 
 	if !validateTransaction(transaction){
 		response, _ := json.Marshal(&models.Error{
@@ -27,7 +28,7 @@ func CreateTransaction(w http.ResponseWriter, r *http.Request, next http.Handler
 		WriteResponse(w,http.StatusBadRequest,response)
 	}else {
 		if doWalletIDValidation(w, walletId) {
-			if isExist,_ := isWalletExists(bson.ObjectId(walletId)); isExist {
+			if isExist,_ := isWalletExists(bson.ObjectIdHex(walletId)); isExist {
 				validWalletId := bson.ObjectIdHex(walletId)
 				transaction.WalletId = validWalletId
 				fmt.Println(transaction)
