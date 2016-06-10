@@ -42,7 +42,7 @@ func CreateTransaction(transaction *models.Transaction) (int, []byte) {
 				"walletId":transaction.WalletId,
 				"amount": transaction.Amount,
 				"type":transaction.Type,
-				"unixDataTime":transaction.UnixDateTime,
+				"unixDateTime":transaction.UnixDateTime,
 			}, t)
 
 			if err != nil {
