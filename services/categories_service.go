@@ -4,7 +4,6 @@ import (
 	"backend/models"
 	"backend/core/store"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 	"fmt"
 )
 
@@ -16,17 +15,13 @@ var expenseCategories = []string{"Food & Beverage", "Shopping/Clothes", "Health/
 func CreateCategoies() {
 	mongo := store.ConnectMongo()
 	var categories []models.Category
-	mongo.FindAll(store.TableCategories,bson.M{},&categories)
+	mongo.FindAll(store.TableCategories, bson.M{}, &categories)
 
 	fmt.Println(len(categories))
 	fmt.Println(len(incomeCategories) + len(expenseCategories))
 
 	if len(categories) != (len(incomeCategories) + len(expenseCategories)) {
-
-		if err := mongo.DropTable(store.TableCategories); err != nil{
-			log.Fatal(err)
-		}
-
+		mongo.DropTable(store.TableCategories);
 		createExpenseCategories(mongo)
 		createIncomeCategories(mongo)
 	}
@@ -40,9 +35,7 @@ func createIncomeCategories(mongo *store.MongoDB) {
 		if err := mongo.WriteDataTo(store.TableCategories, c); err != nil {
 			panic(err)
 		}
-
 	}
-
 }
 
 func createExpenseCategories(mongo *store.MongoDB) {

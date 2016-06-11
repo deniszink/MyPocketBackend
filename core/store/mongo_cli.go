@@ -12,6 +12,10 @@ type MongoDB struct {
 	mongodb *mgo.Database
 }
 
+type errorString struct {
+	s string
+}
+
 var TableUsers string = "users"
 var TableWallets string = "wallets"
 var TableTransactions string = "transactions"
@@ -112,8 +116,12 @@ func (this *MongoDB) DropTable(tableName string) error{
 		}
 
 	}
-	return error("Table Categories do not exists")
+	return &errorString{"Table do not exists"}
+}
 
+
+func (e *errorString) Error() string {
+	return e.s
 }
 
 
