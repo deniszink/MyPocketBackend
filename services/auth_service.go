@@ -15,6 +15,8 @@ import (
 type LoginResponse struct {
 	*models.User `json:"user"`
 	*models.Token
+	IncomeCategories []models.Category `json:"incomeCategories"`
+	ExpenseCategories []models.Category `json:"expenseCategories"`
 }
 
 func Login(requestUser *models.User) (int, []byte) {
@@ -37,9 +39,25 @@ func Login(requestUser *models.User) (int, []byte) {
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
+			var incomeCategories []models.Category
+			var expenseCategories []models.Category
+			var all []models.Category
+
+			mongo.FindAll(store.TableCategories,bson.M{},&all)
+
+			for _, value := range all{
+				if value.Type == "income"{
+					incomeCategories = append(incomeCategories,value)
+				}else{
+					expenseCategories = append(expenseCategories,value)
+				}
+			}
+
 			response, _ := json.Marshal(LoginResponse{
 				user,
 				&models.Token{token},
+				incomeCategories,
+				expenseCategories,
 			})
 			fmt.Println(string(response))
 			return http.StatusOK, response

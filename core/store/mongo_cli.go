@@ -15,6 +15,8 @@ type MongoDB struct {
 var TableUsers string = "users"
 var TableWallets string = "wallets"
 var TableTransactions string = "transactions"
+var TableCategories string = "categories"
+
 var mongoInstance *MongoDB
 
 const (
@@ -44,8 +46,6 @@ func ConnectMongo() (mongo *MongoDB) {
 
 		mongoInstance.session, err = mgo.DialWithInfo(dialinfo)
 
-		//defer  mongoInstance.session.Close()
-
 		if err != nil {
 			panic(err)
 		}
@@ -57,6 +57,7 @@ func ConnectMongo() (mongo *MongoDB) {
 		mongoInstance.mongodb.C(TableUsers)
 		mongoInstance.mongodb.C(TableWallets)
 		mongoInstance.mongodb.C(TableTransactions)
+		mongoInstance.mongodb.C(TableCategories)
 
 		if err != nil {
 			panic(err)
@@ -101,6 +102,10 @@ func (this *MongoDB) GetOne(tableName string, selector bson.M, source interface{
 func (this *MongoDB) Update(tableName string, selector interface{}, source interface{}) error {
 	table := this.mongodb.C(tableName)
 	return table.Update(selector, source)
+}
+
+func (this *MongoDB) DropTable(tableName string) error{
+	return this.mongodb.C(TableCategories).DropCollection()
 }
 
 
