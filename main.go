@@ -10,16 +10,12 @@ import (
 )
 
 func main() {
+	services.CreateCategoies()
 	settings.Init()
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
-
-	//services.CreateCategoies()
 	http.ListenAndServe(":"+os.Getenv("PORT"), n)
-	services.CreateCategoies()
 	//http.ListenAndServe(":5000", n)
-
-
 }
 
