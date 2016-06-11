@@ -52,7 +52,6 @@ func Login(requestUser *models.User) (int, []byte) {
 					expenseCategories = append(expenseCategories,value)
 				}
 			}
-			CreateCategoies() //FIXME move this get out of here
 			response, _ := json.Marshal(LoginResponse{
 				user,
 				&models.Token{token},

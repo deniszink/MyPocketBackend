@@ -6,6 +6,7 @@ import (
 	"backend/settings"
 	"backend/routers"
 	"os"
+	"backend/services"
 )
 
 func main() {
@@ -13,6 +14,7 @@ func main() {
 	router := routers.InitRoutes()
 	n := negroni.Classic()
 	n.UseHandler(router)
+	services.CreateCategoies()
 	http.ListenAndServe(":"+os.Getenv("PORT"), n)
 	//http.ListenAndServe(":5000", n)
 }

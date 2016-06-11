@@ -105,7 +105,15 @@ func (this *MongoDB) Update(tableName string, selector interface{}, source inter
 }
 
 func (this *MongoDB) DropTable(tableName string) error{
-	return this.mongodb.C(TableCategories).DropCollection()
+	names,_ := this.mongodb.CollectionNames()
+	for _, table := range names {
+		if table == TableCategories{
+			return this.mongodb.C(TableCategories).DropCollection()
+		}
+
+	}
+	return error("Table Categories do not exists")
+
 }
 
 
