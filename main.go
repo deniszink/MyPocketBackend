@@ -6,11 +6,9 @@ import (
 	"backend/settings"
 	"backend/routers"
 	"os"
-	"backend/services"
 )
 
 func main() {
-	services.CreateCategoies()
 	settings.Init()
 	router := routers.InitRoutes()
 	n := negroni.Classic()

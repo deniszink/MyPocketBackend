@@ -10,6 +10,7 @@ import (
 	"backend/core/store"
 	"gopkg.in/mgo.v2/bson"
 	"fmt"
+	"golang-jwt-authentication-api-sample/services"
 )
 
 type LoginResponse struct {
@@ -59,6 +60,7 @@ func Login(requestUser *models.User) (int, []byte) {
 				incomeCategories,
 				expenseCategories,
 			})
+			CreateCategoies() //FIXME move this get out of here
 			fmt.Println(string(response))
 			return http.StatusOK, response
 		}

@@ -9,6 +9,7 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
+
 	requestUser := new(models.User)
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUser)
