@@ -6,6 +6,7 @@ import (
 	"backend/settings"
 	"backend/routers"
 	"os"
+	"backend/services"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 
 	//services.CreateCategoies()
 	http.ListenAndServe(":"+os.Getenv("PORT"), n)
+	services.CreateCategoies()
 	//http.ListenAndServe(":5000", n)
 
 
