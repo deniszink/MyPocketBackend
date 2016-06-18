@@ -40,6 +40,7 @@ func Logout(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	err := services.Logout(r)
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
+		fmt.Print("Error not nil")
 		w.WriteHeader(http.StatusInternalServerError)
 	} else {
 		response, _ := json.Marshal(&models.Message{

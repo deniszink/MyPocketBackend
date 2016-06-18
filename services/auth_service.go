@@ -85,6 +85,7 @@ func Logout(req *http.Request) error {
 		return authBackend.PublicKey, nil
 	})
 	if err != nil {
+		fmt.Println("inside logout, err != nil")
 		return err
 	}
 	tokenString := req.Header.Get("Authorization")
