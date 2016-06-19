@@ -83,7 +83,7 @@ func (backend *JWTAuthenticationBackend)Logout(tokenString string, token *jwt.To
 	redisConn := redisStore.Connect()
 	err := redisConn.SetValue(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims["exp"]))
 	if err != nil{
-		fmt.Println("Set value onLogout error != nil")
+		fmt.Println("Set value onLogout error != nil, msg = "+err.Error())
 	}
 	return err
 }
