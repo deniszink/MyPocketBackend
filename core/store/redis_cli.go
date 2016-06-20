@@ -24,8 +24,8 @@ var instanceRedisCli *redisRequestStore = nil
 
 func Connect()  *redisRequestStore {
 	 if instanceRedisCli == nil{
-		 //conn1 := newRedisPool(prodServer,prodPassword)
-		 pool := newRedisPool(testServer,testPassword)
+		 pool := newRedisPool(prodServer,prodPassword)
+		 //pool := newRedisPool(testServer,testPassword)
 		 defer pool.Close()
 		 instanceRedisCli = NewRedisRequestStore(pool.Get())
 		 //tokenGenerator := NewRedisTokenGenerator(conn, "_token")
