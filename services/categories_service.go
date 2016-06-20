@@ -8,7 +8,7 @@ import (
 )
 
 var incomeCategories = []string{"Salary", "Selling", "Gifts & presents", "Award", "Interest Money", "Other"}
-var expenseCategories = []string{"Food & Beverage", "Shopping & Clothes", "Health & Medicine", "Gym",
+var expenseCategories = []string{"Food & Beverage", "Shopping & Clothes", "Health & Medicine", "Sport & Gym",
 	"Insurance", "Education", "Gifts & presents", "Travel", "Love", "Entertainment",
 	"Investment", "Repairs", "Transport", "Bills & Utilities", "Rent", "Family", "Other"}
 
