@@ -5,8 +5,8 @@ import (
 	"github.com/codegangsta/negroni"
 	"backend/settings"
 	"backend/routers"
-	"os"
 	"backend/services"
+	"os"
 )
 
 func main() {

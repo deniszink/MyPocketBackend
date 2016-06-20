@@ -16,6 +16,7 @@ import (
 	"backend/models"
 	redisStore "backend/core/store"
 	"fmt"
+	"log"
 )
 
 type JWTAuthenticationBackend struct {
@@ -81,22 +82,20 @@ func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp int
 
 func (backend *JWTAuthenticationBackend)Logout(tokenString string, token *jwt.Token) error {
 	redisConn := redisStore.Connect()
-	err := redisConn.SetValue(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims["exp"]))
-	if err != nil{
-		fmt.Println("Set value onLogout error != nil, msg = "+err.Error())
+	_, err := redisConn.Put(tokenString, tokenString, backend.getTokenRemainingValidity(token.Claims["exp"]))
+	if err != nil {
+		log.Fatal(err)
 	}
 	return err
 }
 
 func (backend *JWTAuthenticationBackend) IsInBlackList(token string) bool {
 	redisConn := redisStore.Connect()
-	redisToken, _ := redisConn.GetValue(token)
-
-	if redisToken == nil {
+	if _, err := redisConn.Get(token); err != nil{
 		return false
+	}else{
+		return true
 	}
-
-	return true
 }
 
 func getPublicKey() *rsa.PublicKey {
